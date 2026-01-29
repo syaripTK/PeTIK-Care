@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Obat extends Model {
     /**
@@ -10,14 +8,40 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Obat.hasMany(models.Laporan, {
+        foreignKey: "obatId",
+        as: "laporan",
+      });
     }
   }
-  Obat.init({
-    nama_obat: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Obat',
-  });
+  Obat.init(
+    {
+      nama_obat: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+      },
+      stok: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      kategori: {
+        type: DataTypes.ENUM(
+          "obat-bebas",
+          "obat-bebas-terbatas",
+          "obat-keras",
+          "psikotropika",
+        ),
+        allowNull: false,
+      },
+      foto_obat: {
+        type: DataTypes.STRING,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Obat",
+      tableName: "obat",
+    },
+  );
   return Obat;
 };
