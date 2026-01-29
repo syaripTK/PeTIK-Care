@@ -1,28 +1,54 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Laporans', {
+    await queryInterface.createTable("laporan", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       keluhan: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      tanggal: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      tanggapan: {
+        type: Sequelize.ENUM("ditangani", "ditolak", "dirujuk", "pending"),
+        defaultValue: "pending",
+        allowNull: false,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "user",
+          key: "id",
+        },
+      },
+      obatId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "obat",
+          key: "id",
+        },
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Laporans');
-  }
+    await queryInterface.dropTable("laporan");
+  },
 };
