@@ -12,6 +12,14 @@ const getUser = async () => {
   });
 };
 
+const findByEmail = async (email) => {
+  return await User.findOne({
+    where: { email },
+  });
+};
+
 module.exports = {
-  createUser, getUser
+  createUser,
+  getUser,
+  findByEmail
 };

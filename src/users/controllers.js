@@ -1,6 +1,7 @@
-const { createUser } = require("./services.js");
+const { createUser, findByEmail, getUser } = require("./services.js");
 const { resSukses, resGagal } = require("../helpers/payloads.js");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   try {
@@ -14,4 +15,27 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register };
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await findByEmail(email);
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return resGagal(res, 401, "Email atau password salah");
+    }
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" },
+    );
+    return resSukses(res, 200, "Login berhasil", token);
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+module.exports = { register, login };
