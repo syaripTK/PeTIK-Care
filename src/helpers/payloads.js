@@ -7,7 +7,3 @@ const resGagal = (res, code, message) => {
 };
 
 module.exports = { resSukses, resGagal };
-module.exports = {
-    resSukses,
-    resGagal
-}
