@@ -10,14 +10,29 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.Laporan, { 
+        foreignKey: 'userId' });
     }
   }
   User.init({
-    username: DataTypes.STRING
+    username: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING(50)
+    },
+    role: {
+      type: DataTypes.ENUM('admin', 'user')
+    }
   }, {
     sequelize,
     modelName: 'User',
+    tableName: 'user'
   });
   return User;
 };

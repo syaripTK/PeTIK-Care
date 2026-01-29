@@ -10,14 +10,37 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Laporan.belongsTo(models.User, 
+        { foreignKey: 'userId' });
+      Laporan.belongsTo(models.Obat, 
+        { foreignKey: 'obatId' });
     }
   }
   Laporan.init({
-    keluhan: DataTypes.TEXT
+    tgl: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    keluhan: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    obatId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    tanggapan: {
+      type: DataTypes.ENUM('ditangani', 'ditolak', 'dirujuk', 'pending'),
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Laporan',
+    tableName: 'laporan'
   });
   return Laporan;
 };
