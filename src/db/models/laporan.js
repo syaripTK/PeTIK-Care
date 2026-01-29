@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       tanggal: {
         type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
         allowNull: false,
       },
       userId: {
