@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   Laporan.init(
     {
       tgl: {
-        type: DataTypes.DATE,
+        type: DataTypes.NOW,
         allowNull: false,
       },
       keluhan: {

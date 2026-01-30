@@ -1,4 +1,5 @@
 const express = require("express");
+const verifyToken = require("../middlewares/authMiddleware.js");
 const {
   createLaporan,
   getLaporan,
@@ -8,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.post("/create", createLaporan);
+router.post("/create", verifyToken("user"), createLaporan);
 router.get("/", getLaporan);
 router.get("/cari/:id", getLaporanById);
 router.delete("/delete/:id", deleteLaporan);
