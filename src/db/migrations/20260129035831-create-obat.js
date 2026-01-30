@@ -20,6 +20,18 @@ module.exports = {
       kategori: {
         type: Sequelize.ENUM(
           "obat-bebas",
+          "obat-terbatas",
+          "obat-keras",
+          "psikotropika",
+        ),
+        allowNull: false,
+      },
+      foto_obat: {
+        type: Sequelize.STRING,
+      },
+      kategori: {
+        type: Sequelize.ENUM(
+          "obat-bebas",
           "obat-bebas-terbatas",
           "obat-keras",
           "psikotropika",
@@ -41,11 +53,12 @@ module.exports = {
           "psikotropika",
         ),
         allowNull: false,
+      },
+      createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },

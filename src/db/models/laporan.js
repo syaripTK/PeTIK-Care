@@ -8,12 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       Laporan.belongsTo(models.User, {
         foreignKey: "userId",
         as: "user",
       });
-
       Laporan.belongsTo(models.Obat, {
         foreignKey: "obatId",
         as: "obat",
@@ -22,41 +20,24 @@ module.exports = (sequelize, DataTypes) => {
   }
   Laporan.init(
     {
-      id: {
+      tgl: {
+        type: DataTypes.DATE,
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
       },
       keluhan: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      tanggal: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false,
-      },
       userId: {
         type: DataTypes.INTEGER,
-        references: {
-          model: "user",
-          key: "id",
-        },
         allowNull: false,
       },
       obatId: {
         type: DataTypes.INTEGER,
-        references: {
-          model: "obat",
-          key: "id",
-        },
         allowNull: false,
       },
       tanggapan: {
         type: DataTypes.ENUM("ditangani", "ditolak", "dirujuk", "pending"),
-        allowNull: false,
-        defaultValue: "pending",
         allowNull: false,
       },
     },

@@ -1,5 +1,8 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const {
+  Model
+} = require('sequelize');
+const laporan = require('./laporan');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -8,45 +11,31 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      User.hasMany(models.Laporan, {
-        foreignKey: "userId",
-        as: "laporan",
+      User.hasMany(models.Laporan, { 
+        foreignKey: 'userId',
+        as: 'laporan'
       });
     }
   }
-  User.init(
-    {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
-      username: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING(50),
-      },
-      role: {
-        type: DataTypes.ENUM("admin", "user"),
-        defaultValue: "user",
-        allowNull: false,
-      },
+  User.init({
+    username: {
+      type: DataTypes.STRING(50),
+      allowNull: false
     },
-    {
-      sequelize,
-      modelName: "User",
-      tableName: "user",
-      freezeTableName: true,
-      timestamps: true,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
     },
-  );
+    email: {
+      type: DataTypes.STRING(50)
+    },
+    role: {
+      type: DataTypes.ENUM('admin', 'user')
+    }
+  }, {
+    sequelize,
+    modelName: 'User',
+    tableName: 'user'
+  });
   return User;
 };
