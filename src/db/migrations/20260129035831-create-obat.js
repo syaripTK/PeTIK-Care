@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("obat", {
+    await queryInterface.createTable('obat', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,11 +11,18 @@ module.exports = {
       },
       nama_obat: {
         type: Sequelize.STRING(50),
-        allowNull: false,
+        allowNull: false
       },
       stok: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: false
+      },
+      kategori: {
+        type: Sequelize.ENUM('obat-bebas', 'obat-terbatas', 'obat-keras', 'psikotropika'),
+        allowNull: false
+      },
+      foto_obat: {
+        type: Sequelize.STRING
       },
       kategori: {
         type: Sequelize.ENUM(

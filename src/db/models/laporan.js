@@ -8,64 +8,41 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Laporan.belongsTo(models.User, {
-        foreignKey: "userId",
-        as: "user",
+      Laporan.belongsTo(models.User, { 
+        foreignKey: 'userId',
+        as: 'user'
       });
-
-      Laporan.belongsTo(models.Obat, {
-        foreignKey: "obatId",
-        as: "obat",
+      Laporan.belongsTo(models.Obat, { 
+        foreignKey: 'obatId',
+        as: 'obat'
       });
     }
   }
-  Laporan.init(
-    {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-      },
-      keluhan: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-      tanggal: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-        allowNull: false,
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "user",
-          key: "id",
-        },
-        allowNull: false,
-      },
-      obatId: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "obat",
-          key: "id",
-        },
-        allowNull: false,
-      },
-      tanggapan: {
-        type: DataTypes.ENUM("ditangani", "ditolak", "dirujuk", "pending"),
-        allowNull: false,
-        defaultValue: "pending",
-        allowNull: false,
-      },
+  Laporan.init({
+    tgl: {
+      type: DataTypes.DATE,
+      allowNull: false
     },
-    {
-      sequelize,
-      modelName: "Laporan",
-      tableName: "laporan",
-      timestamps: true,
+    keluhan: {
+      type: DataTypes.TEXT,
+      allowNull: false
     },
-  );
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    obatId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    tanggapan: {
+      type: DataTypes.ENUM('ditangani', 'ditolak', 'dirujuk', 'pending'),
+      allowNull: false
+    }
+  }, {
+    sequelize,
+    modelName: 'Laporan',
+    tableName: 'laporan'
+  });
   return Laporan;
 };
