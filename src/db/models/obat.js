@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // define association here
       Obat.hasMany(models.Laporan, {
         foreignKey: "obatId",
         as: "laporan",
@@ -16,19 +17,25 @@ module.exports = (sequelize, DataTypes) => {
   }
   Obat.init(
     {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
       nama_obat: {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
       stok: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        defaultValue: 0,
       },
       kategori: {
         type: DataTypes.ENUM(
-          "obat-bebas",
-          "obat-bebas-terbatas",
-          "obat-keras",
+          "obat_bebas",
+          "obat_bebas_terbatas",
+          "obat_keras",
           "psikotropika",
         ),
         allowNull: false,
@@ -41,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Obat",
       tableName: "obat",
+      timestamps: true,
     },
   );
   return Obat;

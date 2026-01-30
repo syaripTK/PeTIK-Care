@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      // define association here
       User.hasMany(models.Laporan, {
         foreignKey: "userId",
         as: "laporan",
@@ -32,18 +33,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING(50),
-        allowNull: false,
       },
       role: {
         type: DataTypes.ENUM("admin", "user"),
-        allowNull: false,
         defaultValue: "user",
+        allowNull: false,
       },
     },
     {
       sequelize,
       modelName: "User",
       tableName: "user",
+      freezeTableName: true,
+      timestamps: true,
     },
   );
   return User;

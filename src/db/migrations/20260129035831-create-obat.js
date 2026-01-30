@@ -29,7 +29,17 @@ module.exports = {
       foto_obat: {
         type: Sequelize.STRING,
       },
-      createdAt: {
+      stok: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      kategori: {
+        type: Sequelize.ENUM(
+          "obat_bebas",
+          "obat_bebas_terbatas",
+          "obat_keras",
+          "psikotropika",
+        ),
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),

@@ -26,12 +26,18 @@ module.exports = {
         allowNull: false,
         defaultValue: "user",
       },
-      createdAt: {
+      password: {
+        type: Sequelize.STRING,
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
-      updatedAt: {
+      email: {
+        type: Sequelize.STRING(50),
+      },
+      role: {
+        type: Sequelize.ENUM("admin", "user"),
+        defaultValue: "user",
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),

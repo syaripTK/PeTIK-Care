@@ -39,13 +39,38 @@ module.exports = {
         allowNull: false,
         defaultValue: "pending",
       },
-      createdAt: {
+      tanggal: {
+        type: Sequelize.DATE,
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
-      updatedAt: {
+      tanggapan: {
+        type: Sequelize.ENUM("ditangani", "ditolak", "dirujuk", "pending"),
+        defaultValue: "pending",
         allowNull: false,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "user",
+          key: "id",
+        },
+      },
+      obatId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "obat",
+          key: "id",
+        },
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      updatedAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
