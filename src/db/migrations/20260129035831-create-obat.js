@@ -26,9 +26,6 @@ module.exports = {
         ),
         allowNull: false,
       },
-      foto_obat: {
-        type: Sequelize.STRING,
-      },
       kategori: {
         type: Sequelize.ENUM(
           "obat-bebas",
