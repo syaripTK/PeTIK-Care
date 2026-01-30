@@ -20,14 +20,14 @@ const fileFilter = (req, file, cb) => {
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("File harus PNG atau JPEG"), false);
+    cb(new Error("File harus PNG, JPEG dan PDF"), false);
   }
 };
 
 const upload = multer({
   storage,
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 2 * 1024 * 1024,
   },
   fileFilter,
 });
