@@ -18,8 +18,24 @@ const findByEmail = async (email) => {
   });
 };
 
+const findById = async (id) => {
+  return await User.findByPk(id, {
+    attributes: {
+      exclude: ["password"],
+    },
+  });
+};
+
+const findByRole = async (role) => {
+  return await User.findAll({
+    where: { role },
+  });
+};
+
 module.exports = {
   createUser,
   getUser,
-  findByEmail
+  findByEmail,
+  findById,
+  findByRole,
 };
