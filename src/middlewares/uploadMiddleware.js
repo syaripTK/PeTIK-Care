@@ -15,12 +15,12 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "application/pdf"];
+  const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
 
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("File harus PNG, JPEG dan PDF"), false);
+    cb(new Error("File harus PNG, dan JPEG"), false);
   }
 };
 
