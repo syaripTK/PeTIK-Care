@@ -12,35 +12,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", express.static(path.join(__dirname, "uploads")));
 app.use("/api/laporan", routerLaporan);
 app.use("/api/tanggapan", routerTanggapan);
-
-//Tambahkan middlewares static files untuk mempublic folder yang berisi file yang nantinya akan dikonsumsi oleh frontend
-// app.use("/api", express.static(path.join(__dirname, "uploads")));
-const PORT = 3000;
-
 app.use("/api/users", routeUser);
 
-// app.get("/", async (req, res) => {
-//   try {
-//     await sequelize.authenticate();
-//     return res.json({
-//       message: "Database berhasil terkoneksi",
-//     });
-//   } catch (error) {
-//     return res.json({ message: error.message });
-//   }
-// });
+app.use("/api", express.static(path.join(__dirname, "uploads")));
+const PORT = 3000;
 
-// const bcrypt = require("bcrypt");
 
-// (async () => {
-//   const password = "123456";
-//   const hash = await bcrypt.hash(password, 10);
 
-//   console.log("HASH:", hash);
 
-//   const match = await bcrypt.compare("123456", hash);
-//   console.log("MATCH:", match);
-// })();
+
 
 
 app.listen(PORT, () => {
