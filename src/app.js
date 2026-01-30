@@ -2,7 +2,7 @@ process.env.TZ = "Asia/Jakarta";
 const express = require("express");
 const sequelize = require("./config/koneksi.js");
 const path = require("path");
-const userRoutes = require("./users/routes.js");
+
 const obatRoutes = require("./obat/routes.js");
 
 const app = express();
@@ -12,7 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", express.static(path.join(__dirname, "uploads")));
 
 // Routes
-app.use('/users', userRoutes);
 app.use('/obat', obatRoutes);
 
 const PORT = 8080;
