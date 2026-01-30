@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "user",
       });
+
       Laporan.belongsTo(models.Obat, {
         foreignKey: "obatId",
         as: "obat",
@@ -33,10 +34,28 @@ module.exports = (sequelize, DataTypes) => {
       },
       tanggal: {
         type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false,
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "user",
+          key: "id",
+        },
+        allowNull: false,
+      },
+      obatId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "obat",
+          key: "id",
+        },
         allowNull: false,
       },
       tanggapan: {
         type: DataTypes.ENUM("ditangani", "ditolak", "dirujuk", "pending"),
+        allowNull: false,
         defaultValue: "pending",
         allowNull: false,
       },

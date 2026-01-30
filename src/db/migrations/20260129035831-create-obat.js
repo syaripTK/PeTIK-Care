@@ -15,6 +15,22 @@ module.exports = {
       },
       stok: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      kategori: {
+        type: Sequelize.ENUM(
+          "obat-bebas",
+          "obat-bebas-terbatas",
+          "obat-keras",
+          "psikotropika",
+        ),
+        allowNull: false,
+      },
+      foto_obat: {
+        type: Sequelize.STRING,
+      },
+      stok: {
+        type: Sequelize.INTEGER,
         defaultValue: 0,
       },
       kategori: {
@@ -25,15 +41,11 @@ module.exports = {
           "psikotropika",
         ),
         allowNull: false,
-      },
-      foto_obat: {
-        type: Sequelize.STRING,
-      },
-      createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
+        allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
