@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -7,7 +7,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       nama_obat: {
         type: Sequelize.STRING(50),
@@ -24,19 +24,41 @@ module.exports = {
       foto_obat: {
         type: Sequelize.STRING
       },
-      createdAt: {
+      kategori: {
+        type: Sequelize.ENUM(
+          "obat-bebas",
+          "obat-bebas-terbatas",
+          "obat-keras",
+          "psikotropika",
+        ),
+        allowNull: false,
+      },
+      foto_obat: {
+        type: Sequelize.STRING,
+      },
+      stok: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      kategori: {
+        type: Sequelize.ENUM(
+          "obat_bebas",
+          "obat_bebas_terbatas",
+          "obat_keras",
+          "psikotropika",
+        ),
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
-      }
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('obat');
-  }
+    await queryInterface.dropTable("obat");
+  },
 };

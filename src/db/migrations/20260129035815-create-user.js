@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -7,7 +7,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       username: {
         type: Sequelize.STRING(50),
@@ -22,13 +22,25 @@ module.exports = {
       },
       role: {
         type: Sequelize.ENUM('admin', 'user')
+        allowNull: false,
       },
-      createdAt: {
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+      },
+      role: {
+        type: Sequelize.ENUM("admin", "user"),
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+        defaultValue: "user",
       },
-      updatedAt: {
+      password: {
+        type: Sequelize.STRING,
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
