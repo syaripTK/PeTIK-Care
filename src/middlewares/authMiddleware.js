@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { resGagal } = require("../helpers/payloads.js");
 
-const verifyToken = (req, res, next) => {
+const verifyToken = (role) => (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -14,7 +14,10 @@ const verifyToken = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    console.info(decoded.username);
+    if (decoded.role != role) {
+      return resGagal(res, 400, "Access denied");
+    }
     next();
   } catch (error) {
     return resGagal(res, 401, "Token tidak valid atau expired");

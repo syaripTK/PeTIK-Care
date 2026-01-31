@@ -14,4 +14,19 @@ const validate = (schema) => (req, res, next) => {
     }
   }
 };
-module.exports = validate;
+
+const validateParams = (schema) => (req, res, next) => {
+  const result = schema.safeParse(req.params);
+
+  if (!result.success) {
+    return res.status(400).json({
+      status: "error",
+      message: result.error.flatten().fieldErrors,
+    });
+  }
+
+  req.params = result.data;
+  next();
+};
+
+module.exports = { validate, validateParams };

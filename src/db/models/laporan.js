@@ -20,14 +20,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Laporan.init(
     {
-      tgl: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
       keluhan: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      tanggal: {
+        type: DataTypes.NOW,
+        },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -38,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       tanggapan: {
         type: DataTypes.ENUM("ditangani", "ditolak", "dirujuk", "pending"),
-        allowNull: false,
       },
     },
     {
