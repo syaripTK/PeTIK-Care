@@ -1,4 +1,11 @@
-const { createUser, findByEmail, getUser, findById } = require("./services.js");
+const {
+  createUser,
+  findByEmail,
+  getUser,
+  findById,
+  remove,
+  editPassword,
+} = require("./services.js");
 const { resSukses, resGagal } = require("../helpers/payloads.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -60,4 +67,13 @@ const searchUser = async (req, res) => {
   }
 };
 
-module.exports = { register, login, searchUser };
+const getAllUser = async (req, res) => {
+  try {
+    const data = await getUser();
+    return resSukses(res, 200, "Data semua user", data);
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+module.exports = { register, login, searchUser, getUser, getAllUser };

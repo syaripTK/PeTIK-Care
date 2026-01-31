@@ -1,5 +1,5 @@
 const express = require("express");
-const { register, login, searchUser } = require("./controllers.js");
+const { register, login, searchUser, getAllUser } = require("./controllers.js");
 const { loginLimiter } = require("../middlewares/rateLimit.js");
 const { validate, validateParams } = require("../middlewares/validate.js");
 const { loginSchema, registerSchema } = require("../schemas/authSchema.js");
@@ -24,5 +24,6 @@ router.get(
   verifyToken("admin"),
   searchUser,
 );
+router.get("/", verifyToken("admin"), getAllUser);
 
 module.exports = router;
