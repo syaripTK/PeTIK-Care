@@ -1,4 +1,4 @@
-const { createUser, findByEmail, getUser } = require("./services.js");
+const { createUser, findByEmail, getUser, findById } = require("./services.js");
 const { resSukses, resGagal } = require("../helpers/payloads.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -50,4 +50,14 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const searchUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await findById(id);
+    return resSukses(res, 200, "Data user berhasil ditemukan", user);
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+module.exports = { register, login, searchUser };

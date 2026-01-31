@@ -14,7 +14,8 @@ const verifyToken = (role) => (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.username != role) {
+    console.info(decoded.username);
+    if (decoded.role != role) {
       return resGagal(res, 400, "Access denied");
     }
     next();

@@ -10,7 +10,8 @@ const { resSukses, resGagal } = require("../helpers/payloads.js");
 const createLaporan = async (req, res) => {
   try {
     const { keluhan, userId, obatId } = req.body;
-    const body = { keluhan, userId, obatId };
+    const tanggal = new Date()
+    const body = { tanggal, keluhan, userId, obatId };
     const data = await tambahLaporan(body);
     return resSukses(res, 201, "Data laporan berhasil ditambahkan", data);
   } catch (error) {
