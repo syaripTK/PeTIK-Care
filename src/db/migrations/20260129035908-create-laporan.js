@@ -24,6 +24,8 @@ module.exports = {
           model: "user",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT",
       },
       obatId: {
         type: Sequelize.INTEGER,
@@ -32,6 +34,8 @@ module.exports = {
           model: "obat",
           key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT",
       },
 
       tanggapan: {
