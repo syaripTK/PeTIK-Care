@@ -1,8 +1,17 @@
 const express = require("express");
-const { register, login, searchUser, getAllUser } = require("./controllers.js");
+const {
+  register,
+  login,
+  searchUser,
+  getAllUser,
+  editPasswordForUser,
+  removeUserForUser,
+} = require("./controllers.js");
+const confirmPassword = require("../middlewares/confirmPassword.js");
 const { loginLimiter } = require("../middlewares/rateLimit.js");
 const { validate, validateParams } = require("../middlewares/validate.js");
 const { loginSchema, registerSchema } = require("../schemas/authSchema.js");
+const changeSchema = require("../schemas/userSchema.js");
 const idParamsSchema = require("../schemas/paramsSchema.js");
 const verifyToken = require("../middlewares/authMiddleware.js");
 const multer = require("multer");
@@ -25,5 +34,19 @@ router.get(
   searchUser,
 );
 router.get("/", verifyToken("admin"), getAllUser);
+router.post(
+  "/delete/:id",
+  validateParams(idParamsSchema),
+  verifyToken("user"),
+  confirmPassword,
+  removeUserForUser,
+);
+router.patch(
+  "/change",
+  verifyToken("user"),
+  uploads.none(),
+  validate(changeSchema),
+  editPasswordForUser,
+);
 
 module.exports = router;

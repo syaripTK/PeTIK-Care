@@ -24,7 +24,7 @@ const register = async (req, res) => {
     const passHashed = await bcrypt.hash(password, 10);
     const body = { username, password: passHashed, email };
     await createUser(body);
-    return resSukses(res, 201, "Data user berhasil ditambahkan");
+    return resSukses(res, 201, "Registrasi berhasil");
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
@@ -40,7 +40,7 @@ const login = async (req, res) => {
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return resGagal(res, 401, "Email atau password salah");
+      return resGagal(res, 401, "Password salah!");
     }
     const token = jwt.sign(
       {
@@ -76,4 +76,42 @@ const getAllUser = async (req, res) => {
   }
 };
 
-module.exports = { register, login, searchUser, getUser, getAllUser };
+const editPasswordForUser = async (req, res) => {
+  try {
+    const { email, passwordLama, passwordBaru } = req.body;
+    const account = await findByEmail(email);
+    if (account === null) {
+      return resGagal(res, 404, "User tidak ditemukan");
+    }
+    const isMatch = await bcrypt.compare(passwordLama, account.password);
+    if (!isMatch) {
+      return resGagal(res, 401, "Password salah!");
+    }
+    const newPassword = await bcrypt.hash(passwordBaru, 10);
+    const body = { password: newPassword };
+    await editPassword(email, body);
+    return resSukses(res, 201, "Password berhasil diubah");
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+const removeUserForUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await remove(id);
+    return resSukses(res, 200, "Data berhasil dihapus");
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  searchUser,
+  getUser,
+  getAllUser,
+  editPasswordForUser,
+  removeUserForUser,
+};

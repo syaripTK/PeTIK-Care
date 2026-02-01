@@ -32,6 +32,9 @@ const findById = async (id) => {
     },
   });
 };
+const findId = async (id) => {
+  return await User.findByPk(id);
+};
 
 const findByRole = async (role) => {
   return await User.findAll({
@@ -45,8 +48,8 @@ const remove = async (id) => {
   });
 };
 
-const editPassword = async (id, body) => {
-  const user = await User.findByPk(id);
+const editPassword = async (email, body) => {
+  const user = await findByEmail(email);
   await user.update(body);
   return user;
 };
@@ -59,4 +62,5 @@ module.exports = {
   findByRole,
   remove,
   editPassword,
+  findId
 };
