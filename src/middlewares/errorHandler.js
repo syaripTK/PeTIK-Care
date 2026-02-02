@@ -1,26 +1,17 @@
 const multer = require("multer");
+const { resGagal } = require("../helpers/payloads.js");
 
 const pengecekanPoto = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
-
     if (err.code === "LIMIT_FILE_SIZE") {
-      return res.status(400).json({
-        status: "error",
-        message: "Ukuran foto maksimal 2 MB",
-      });
+      return resGagal(400, "error", "Ukuran foto maksimal 2 MB");
     }
 
-    return res.status(400).json({
-      status: "error",
-      message: "Gagal upload file",
-    });
+    return resGagal(400, "error", "Gagal Upload File");
   }
 
   if (err) {
-    return res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
+    return resGagal(400, message.error);
   }
 
   next();
