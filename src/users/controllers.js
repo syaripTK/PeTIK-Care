@@ -133,7 +133,6 @@ const refreshToken = async (req, res) => {
         }
         const user = await findId(decoded.id);
         const newAccessToken = generateAccessToken(user);
-        console.info(newAccessToken);
         return resSukses(res, 200, "Token berhasil direfresh!", {
           accessToken: newAccessToken,
         });
