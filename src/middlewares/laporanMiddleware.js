@@ -24,7 +24,27 @@ const checkIdLaporan = async (req, res, next) => {
   next();
 };
 
+const cekIptUserId = async (req, res, next) => {
+  const { userId } = req.body;
+  const data = await Laporan.findByPk(userId);
+  if (data === null) {
+    return resGagal(res, 404, "Maaf, userId tidak ditemukan");
+  }
+  next();
+};
+
+const cekIptObatId = async (req, res, next) => {
+  const { obatId } = req.body;
+  const data = await Laporan.findByPk(obatId);
+  if (data === null) {
+    return resGagal(res, 404, "Maaf, obatId tidak ditemukan");
+  }
+  next();
+};
+
 module.exports = {
   validateCreateLaporan,
   checkIdLaporan,
+  cekIptUserId,
+  cekIptObatId,
 };
