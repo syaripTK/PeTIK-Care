@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const {
   createUser,
   findByEmail,
@@ -5,10 +7,16 @@ const {
   findById,
   remove,
   editPassword,
+  createRefresh,
+  findByToken,
+  removeToken,
+  findId,
 } = require("./services.js");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../helpers/generateToken.js");
 const { resSukses, resGagal } = require("../helpers/payloads.js");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   try {
@@ -42,16 +50,13 @@ const login = async (req, res) => {
     if (!isMatch) {
       return resGagal(res, 401, "Password salah!");
     }
-    const token = jwt.sign(
-      {
-        id: user.id,
-        username: user.username,
-        role: user.role,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" },
-    );
-    return resSukses(res, 200, "Login berhasil", token);
+
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    const body = { userId: user.id, token: refreshToken };
+    await createRefresh(body);
+    return resSukses(res, 200, "Login berhasil", { accessToken, refreshToken });
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
@@ -106,6 +111,49 @@ const removeUserForUser = async (req, res) => {
   }
 };
 
+const refreshToken = async (req, res) => {
+  try {
+    if (!req.body) {
+      return resGagal(res, 400, "Body request tidak valid");
+    }
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      return resGagal(res, 400, "Refresh token tidak ditemukan");
+    }
+    const token = await findByToken(refreshToken);
+    if (!token) {
+      return resGagal(res, 403, "Refresh token tidak valid");
+    }
+    jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET,
+      async (err, decoded) => {
+        if (err) {
+          return resGagal(res, 403, "Refresh token tdk valid!");
+        }
+        const user = await findId(decoded.id);
+        const newAccessToken = generateAccessToken(user);
+        console.info(newAccessToken);
+        return resSukses(res, 200, "Token berhasil direfresh!", {
+          accessToken: newAccessToken,
+        });
+      },
+    );
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    await removeToken(refreshToken);
+    return resSukses(res, 200, "Logout berhasil");
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -114,4 +162,6 @@ module.exports = {
   getAllUser,
   editPasswordForUser,
   removeUserForUser,
+  refreshToken,
+  logout,
 };

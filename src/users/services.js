@@ -1,7 +1,11 @@
-const { User, Laporan } = require("../db/models/index.js");
+const { User, Laporan, Refresh_tokens } = require("../db/models/index.js");
 
 const createUser = async (body) => {
   return await User.create(body);
+};
+
+const createRefresh = async (body) => {
+  return await Refresh_tokens.create(body);
 };
 
 const getUser = async () => {
@@ -42,9 +46,21 @@ const findByRole = async (role) => {
   });
 };
 
+const findByToken = async (token) => {
+  return await Refresh_tokens.findOne({
+    where: { token },
+  });
+};
+
 const remove = async (id) => {
   return await User.destroy({
     where: { id },
+  });
+};
+
+const removeToken = async (token) => {
+  return await Refresh_tokens.destroy({
+    where: { token },
   });
 };
 
@@ -62,5 +78,8 @@ module.exports = {
   findByRole,
   remove,
   editPassword,
-  findId
+  findId,
+  createRefresh,
+  findByToken,
+  removeToken
 };

@@ -9,4 +9,8 @@ const changeSchema = z.object({
     .max(25, "Password terlalu panjang, maksimal 25 karakter"),
 });
 
-module.exports = changeSchema;
+const tokenSchema = z.object({
+  refreshToken: z.string().min(1, "Token tidak boleh kosong"),
+});
+
+module.exports = { changeSchema, tokenSchema };

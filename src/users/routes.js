@@ -6,12 +6,14 @@ const {
   getAllUser,
   editPasswordForUser,
   removeUserForUser,
+  refreshToken,
+  logout,
 } = require("./controllers.js");
 const confirmPassword = require("../middlewares/confirmPassword.js");
 const { loginLimiter } = require("../middlewares/rateLimit.js");
 const { validate, validateParams } = require("../middlewares/validate.js");
 const { loginSchema, registerSchema } = require("../schemas/authSchema.js");
-const changeSchema = require("../schemas/userSchema.js");
+const { changeSchema, tokenSchema } = require("../schemas/userSchema.js");
 const idParamsSchema = require("../schemas/paramsSchema.js");
 const verifyToken = require("../middlewares/authMiddleware.js");
 const multer = require("multer");
@@ -48,5 +50,12 @@ router.patch(
   validate(changeSchema),
   editPasswordForUser,
 );
+router.post(
+  "/auth/refresh",
+  validate(tokenSchema),
+  refreshToken,
+);
+
+router.post("/logout", validate(tokenSchema), logout)
 
 module.exports = router;
