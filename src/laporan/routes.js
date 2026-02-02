@@ -6,12 +6,21 @@ const {
   getLaporanById,
   deleteLaporan,
 } = require("./controllers.js");
+const {
+  checkIdLaporan,
+  validateCreateLaporan,
+} = require("../middlewares/laporanMiddleware.js");
 
 const router = express.Router();
 
-router.post("/create", verifyToken("user"), createLaporan);
+router.post(
+  "/create",
+  validateCreateLaporan,
+  verifyToken("user"),
+  createLaporan,
+);
 router.get("/", getLaporan);
-router.get("/cari/:id", getLaporanById);
-router.delete("/delete/:id", deleteLaporan);
+router.get("/cari/:id", checkIdLaporan, getLaporanById);
+router.delete("/delete/:id", checkIdLaporan, deleteLaporan);
 
 module.exports = router;
