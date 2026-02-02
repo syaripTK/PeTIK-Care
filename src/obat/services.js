@@ -2,10 +2,15 @@ const { where } = require("sequelize");
 const db = require("../db/models/index.js");
 const { Obat } = db;
 
-const tampilObat = async () => {
+const tampilObatAdmin = async () => {
   return await Obat.findAll();
 };
 
+const tampilObatUser = async () => {
+  return await Obat.findAll({
+    attributes: ["nama_obat", "stok"],
+  });
+};
 const tambahObat = async (body) => {
   return await Obat.create(body);
 };
@@ -28,7 +33,8 @@ const hapusObat = async (id) => {
 };
 
 module.exports = {
-  tampilObat,
+  tampilObatAdmin,
+  tampilObatUser,
   tambahObat,
   cariIdObat,
   ubahObat,

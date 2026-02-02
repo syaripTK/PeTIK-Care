@@ -1,5 +1,6 @@
 const {
-  tampilObat,
+  tampilObatAdmin,
+  tampilObatUser,
   tambahObat,
   cariIdObat,
   ubahObat,
@@ -9,9 +10,18 @@ const fs = require("fs");
 const path = require("path");
 const { resSukses, resGagal } = require("../helpers/payloads.js");
 
-const getAllObat = async (req, res) => {
+const getAllObatAdmin = async (req, res) => {
   try {
-    const obat = await tampilObat();
+    const obat = await tampilObatAdmin();
+    return resSukses(res, 200, "Data Obat", obat);
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+const getAllObatUser = async (req, res) => {
+  try {
+    const obat = await tampilObatUser();
     return resSukses(res, 200, "Data Obat", obat);
   } catch (error) {
     return resGagal(res, 500, error.message);
@@ -106,7 +116,8 @@ const deleteObat = async (req, res) => {
 };
 
 module.exports = {
-  getAllObat,
+  getAllObatAdmin,
+  getAllObatUser,
   createObat,
   getObatById,
   updateObat,
