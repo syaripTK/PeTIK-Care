@@ -1,7 +1,11 @@
-const { User } = require("../db/models/index.js");
+const { User, Laporan, Refresh_tokens } = require("../db/models/index.js");
 
 const createUser = async (body) => {
   return await User.create(body);
+};
+
+const createRefresh = async (body) => {
+  return await Refresh_tokens.create(body);
 };
 
 const getUser = async () => {
@@ -9,6 +13,13 @@ const getUser = async () => {
     attributes: {
       exclude: ["password"],
     },
+    include: [
+      {
+        model: Laporan,
+        as: "laporan",
+        attributes: ["keluhan", "tanggapan"],
+      },
+    ],
   });
 };
 
@@ -25,11 +36,38 @@ const findById = async (id) => {
     },
   });
 };
+const findId = async (id) => {
+  return await User.findByPk(id);
+};
 
 const findByRole = async (role) => {
   return await User.findAll({
     where: { role },
   });
+};
+
+const findByToken = async (token) => {
+  return await Refresh_tokens.findOne({
+    where: { token },
+  });
+};
+
+const remove = async (id) => {
+  return await User.destroy({
+    where: { id },
+  });
+};
+
+const removeToken = async (token) => {
+  return await Refresh_tokens.destroy({
+    where: { token },
+  });
+};
+
+const editPassword = async (email, body) => {
+  const user = await findByEmail(email);
+  await user.update(body);
+  return user;
 };
 
 module.exports = {
@@ -38,4 +76,10 @@ module.exports = {
   findByEmail,
   findById,
   findByRole,
+  remove,
+  editPassword,
+  findId,
+  createRefresh,
+  findByToken,
+  removeToken
 };

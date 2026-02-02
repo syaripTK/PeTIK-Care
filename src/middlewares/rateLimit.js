@@ -5,7 +5,7 @@ const loginLimiter = rateLimit({
   limit: 5,
   ipv6Subnet: 56,
   message: {
-    staus: "error",
+    status: "error",
     message: "Terlalu banyak percobaan login, coba lagi nanti",
   },
 });
