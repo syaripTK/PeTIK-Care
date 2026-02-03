@@ -101,9 +101,13 @@ const editPasswordForUser = async (req, res) => {
   }
 };
 
-const removeUserForUser = async (req, res) => {
+const removeUser = async (req, res) => {
   try {
     const { id } = req.params;
+    const user = await findById(id);
+    if (user === null) {
+      return resSukses(res, 404, "User tidak ditemukan");
+    }
     await remove(id);
     return resSukses(res, 200, "Data berhasil dihapus");
   } catch (error) {
@@ -160,7 +164,7 @@ module.exports = {
   getUser,
   getAllUser,
   editPasswordForUser,
-  removeUserForUser,
+  removeUser,
   refreshToken,
   logout,
 };

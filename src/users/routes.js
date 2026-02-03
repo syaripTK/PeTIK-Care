@@ -5,7 +5,7 @@ const {
   searchUser,
   getAllUser,
   editPasswordForUser,
-  removeUserForUser,
+  removeUser,
   refreshToken,
   logout,
 } = require("./controllers.js");
@@ -31,17 +31,24 @@ router.post(
 );
 router.get(
   "/search/:id",
-  validateParams(idParamsSchema),
   verifyToken("admin"),
+  validateParams(idParamsSchema),
   searchUser,
 );
 router.get("/", verifyToken("admin"), getAllUser);
 router.post(
-  "/delete/:id",
-  validateParams(idParamsSchema),
+  "/delete/byUser/:id",
+  uploads.none(),
   verifyToken("user"),
+  validateParams(idParamsSchema),
   confirmPassword,
-  removeUserForUser,
+  removeUser,
+);
+router.delete(
+  "/delete/byAdmin/:id",
+  verifyToken("admin"),
+  validateParams(idParamsSchema),
+  removeUser,
 );
 router.patch(
   "/change",
@@ -50,12 +57,8 @@ router.patch(
   validate(changeSchema),
   editPasswordForUser,
 );
-router.post(
-  "/auth/refresh",
-  validate(tokenSchema),
-  refreshToken,
-);
+router.post("/auth/refresh", validate(tokenSchema), refreshToken);
 
-router.post("/logout", validate(tokenSchema), logout)
+router.post("/logout", validate(tokenSchema), logout);
 
 module.exports = router;
