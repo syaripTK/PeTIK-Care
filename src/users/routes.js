@@ -8,6 +8,7 @@ const {
   removeUser,
   refreshToken,
   logout,
+  removeMe,
 } = require("./controllers.js");
 const confirmPassword = require("../middlewares/confirmPassword.js");
 const { loginLimiter } = require("../middlewares/rateLimit.js");
@@ -21,7 +22,7 @@ const uploads = multer();
 
 const router = express.Router();
 
-router.post("/register", uploads.none(), validate(registerSchema), register);
+router.post("/auth/register", uploads.none(), validate(registerSchema), register);
 router.post(
   "/auth/login",
   loginLimiter,
@@ -37,21 +38,20 @@ router.get(
 );
 router.get("/", verifyToken("admin"), getAllUser);
 router.post(
-  "/delete/byUser/:id",
+  "/delete/me",
   uploads.none(),
   verifyToken("user"),
-  validateParams(idParamsSchema),
   confirmPassword,
-  removeUser,
+  removeMe,
 );
 router.delete(
-  "/delete/byAdmin/:id",
+  "/delete/:id",
   verifyToken("admin"),
   validateParams(idParamsSchema),
   removeUser,
 );
 router.patch(
-  "/change",
+  "/change-password",
   verifyToken("user"),
   uploads.none(),
   validate(changeSchema),
@@ -59,6 +59,6 @@ router.patch(
 );
 router.post("/auth/refresh", validate(tokenSchema), refreshToken);
 
-router.post("/logout", validate(tokenSchema), logout);
+router.post("/auth/logout", validate(tokenSchema), logout);
 
 module.exports = router;
