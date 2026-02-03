@@ -1,8 +1,6 @@
 const {
   tampilObatAdmin,
   tampilObatUser,
-
-  tampilObat,
   tambahObat,
   cariIdObat,
   ubahObat,
@@ -37,10 +35,6 @@ const createObat = async (req, res) => {
     const { nama_obat, stok, kategori } = req.body;
     let foto_obat = null;
     if (req.file) {
-      // console.log(req.file);
-      // path basename digunakan untuk membaca full fatch dari direktori yang dimaksud
-      // ini contohnya src/uploads/foto_alat-1769574062797-385646126.mp4
-      // tapi akan membaca nama file nya aja
       foto_obat = path.basename(req.file.path);
     }
     const body = {
@@ -70,30 +64,14 @@ const getObatById = async (req, res) => {
 const updateObat = async (req, res) => {
   try {
     const id = req.params.id;
-    const obatLama = await cariIdObat(id);
-    const { nama_obat, stok, kategori } = req.body;
-    let foto_obat = obatLama.foto_obat;
-    // console.log(foto_barang);
+    await cariIdObat(id);
+    const { stok } = req.body;
 
-    if (req.file) {
-      if (obatLama.foto_obat) {
-        const pathLama = path.join(__dirname, "../uploads", obatLama.foto_obat);
-
-        if (fs.existsSync(pathLama)) {
-          fs.unlinkSync(pathLama);
-        }
-      }
-
-      foto_obat = path.basename(req.file.path);
-    }
     const body = {
-      nama_obat,
-      kategori,
-      foto_obat,
       stok,
     };
-    const data = await ubahObat(id, body);
-    return resSukses(res, 200, "Data obat berhasil diupdate", data);
+    await ubahObat(id, body);
+    return resSukses(res, 200, "Data obat berhasil diupdate");
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
@@ -110,8 +88,8 @@ const deleteObat = async (req, res) => {
         fs.unlinkSync(filePath);
       }
     }
-    const data = await hapusObat(id);
-    return resSukses(res, 200, "Data berhasil dihapus", data);
+    await hapusObat(id);
+    return resSukses(res, 200, "Data berhasil dihapus");
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
