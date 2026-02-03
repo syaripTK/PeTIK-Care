@@ -18,13 +18,13 @@ const router = express.Router();
 router.post(
   "/create",
   validateCreateLaporan,
-  cekIptObatId,
   cekIptUserId,
+  cekIptObatId,
   verifyToken("user"),
   createLaporan,
 );
-router.get("/", getLaporan);
-router.get("/search/:id", checkIdLaporan, getLaporanById);
+router.get("/", verifyToken("admin"), getLaporan);
+router.get("/search/:id", verifyToken("admin"), checkIdLaporan, getLaporanById);
 router.delete(
   "/delete/byUser/:id",
   verifyToken("user"),

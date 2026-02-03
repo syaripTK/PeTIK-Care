@@ -10,6 +10,7 @@ module.exports = {
       "user",
       [
         {
+          id:1,
           username: "User Dummy",
           password: pwUser,
           email: "userdummy1@gmail.com",

@@ -45,7 +45,7 @@ const createObat = async (req, res) => {
     };
 
     const obat = await tambahObat(body);
-    return resSukses(res, 201, "Data Obat", obat);
+    return resSukses(res, 201, "Data obat berhasil ditambahkan", obat);
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
@@ -64,8 +64,14 @@ const getObatById = async (req, res) => {
 const updateObat = async (req, res) => {
   try {
     const id = req.params.id;
+<<<<<<< HEAD
     await cariIdObat(id);
     const { stok } = req.body;
+=======
+    const obatLama = await cariIdObat(id);
+    const { nama_obat, stok, kategori } = req.body;
+    let foto_obat = obatLama.foto_obat;
+>>>>>>> main
 
     const body = {
       stok,
