@@ -14,7 +14,6 @@ const verifyToken =
       if (!token) {
         return resGagal(res, 401, "Format token salah");
       }
-
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decoded;
       if (roles.length && !roles.includes(decoded.role)) {

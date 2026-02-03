@@ -16,17 +16,10 @@ const router = express.Router();
 
 router.post(
   "/create",
-<<<<<<< HEAD
-  verifyToken("user"),
-  validateCreateLaporan,
-  cekIptObatId,
-
-=======
   validateCreateLaporan,
   cekIptUserId,
   cekIptObatId,
   verifyToken(["user"]),
->>>>>>> main
   createLaporan,
 );
 router.get("/", verifyToken(["admin"]), getLaporan);
