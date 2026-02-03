@@ -10,15 +10,26 @@ const {
   checkIdLaporan,
   validateCreateLaporan,
   cekIptObatId,
+<<<<<<< HEAD
+=======
+  cekIptUserId,
+>>>>>>> main
 } = require("../middlewares/laporanMiddleware.js");
 
 const router = express.Router();
 
 router.post(
   "/create",
+<<<<<<< HEAD
   verifyToken("user"),
   validateCreateLaporan,
   cekIptObatId,
+=======
+  validateCreateLaporan,
+  cekIptUserId,
+  cekIptObatId,
+  verifyToken("user"),
+>>>>>>> main
   createLaporan,
 );
 router.get("/", verifyToken("admin"), getLaporan);

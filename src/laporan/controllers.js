@@ -9,9 +9,14 @@ const { resSukses, resGagal } = require("../helpers/payloads.js");
 
 const createLaporan = async (req, res) => {
   try {
+<<<<<<< HEAD
     const { keluhan, obatId } = req.body;
     const userId = req.userId;
     const tanggal = new Date();
+=======
+    const { keluhan, userId, obatId } = req.body;
+    const tanggal = new Date()
+>>>>>>> main
     const body = { tanggal, keluhan, userId, obatId };
     const data = await tambahLaporan(body);
     return resSukses(res, 201, "Data laporan berhasil ditambahkan", data);
