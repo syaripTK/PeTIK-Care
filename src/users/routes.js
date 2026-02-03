@@ -22,7 +22,12 @@ const uploads = multer();
 
 const router = express.Router();
 
-router.post("/auth/register", uploads.none(), validate(registerSchema), register);
+router.post(
+  "/auth/register",
+  uploads.none(),
+  validate(registerSchema),
+  register,
+);
 router.post(
   "/auth/login",
   loginLimiter,
@@ -32,33 +37,33 @@ router.post(
 );
 router.get(
   "/search/:id",
-  verifyToken("admin"),
+  verifyToken(["admin"]),
   validateParams(idParamsSchema),
   searchUser,
 );
-router.get("/", verifyToken("admin"), getAllUser);
+router.get("/", verifyToken(["admin"]), getAllUser);
 router.post(
   "/delete/me",
   uploads.none(),
-  verifyToken("user"),
+  verifyToken(["user"]),
   confirmPassword,
   removeMe,
 );
 router.delete(
   "/delete/:id",
-  verifyToken("admin"),
+  verifyToken(["admin"]),
   validateParams(idParamsSchema),
   removeUser,
 );
 router.patch(
   "/change-password",
-  verifyToken("user"),
+  verifyToken(["user"]),
   uploads.none(),
   validate(changeSchema),
   editPasswordForUser,
 );
 router.post("/auth/refresh", validate(tokenSchema), refreshToken);
 
-router.post("/auth/logout", validate(tokenSchema), logout);
+router.post("/auth/logout", verifyToken(["user" , "admin"]), validate(tokenSchema), logout);
 
 module.exports = router;

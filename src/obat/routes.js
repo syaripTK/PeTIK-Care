@@ -19,13 +19,13 @@ const {
   validateUpdateStok,
 } = require("../middlewares/obatMiddleware.js");
 
-router.get("/lookObat/byAdmin", verifyToken("admin"), getAllObatAdmin);
-router.get("/lookObat/byUser", verifyToken("user"), getAllObatUser);
-router.get("/search/:id", checkIdObat, verifyToken("admin"), getObatById);
-router.get("/search", verifyToken("admin"), searchObat);
+router.get("/lookObat/byAdmin", verifyToken(["admin"]), getAllObatAdmin);
+router.get("/lookObat/byUser", verifyToken(["user"]), getAllObatUser);
+router.get("/search/:id", checkIdObat, verifyToken(["admin"]), getObatById);
+router.get("/search", verifyToken(["admin"]), searchObat);
 router.post(
   "/create",
-  verifyToken("admin"),
+  verifyToken(["admin"]),
   uploadObat.single("foto_obat"),
   validateObat,
   createObat,
@@ -33,10 +33,10 @@ router.post(
 router.patch(
   "/update/:id",
   checkIdObat,
-  verifyToken("admin"),
+  verifyToken(["admin"]),
   validateUpdateStok,
   updateObat,
 );
-router.delete("/delete/:id", checkIdObat, verifyToken("admin"), deleteObat);
+router.delete("/delete/:id", checkIdObat, verifyToken(["admin"]), deleteObat);
 
 module.exports = router;

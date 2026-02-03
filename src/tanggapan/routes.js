@@ -12,7 +12,7 @@ router.patch(
   "/update/:id",
   checkIdLaporan,
   validateCreateLaporan,
-  verifyToken("admin"),
+  verifyToken(["admin"]),
   updateLaporan,
 );
 
