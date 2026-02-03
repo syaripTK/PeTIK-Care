@@ -1,12 +1,11 @@
 const { z } = require("zod");
 
 const changeSchema = z.object({
-  email: z.string().email("Email tidak valid"),
-  passwordLama: z.string().min(1, "Password tidak boleh kosong"),
-  passwordBaru: z
+  oldPassword: z.string().min(1, "Old password tidak boleh kosong"),
+  newPassword: z.string().min(1, "New password tidak boleh kosong"),
+  confirmNewPassword: z
     .string()
-    .min(6, "Password minimal berisi 6 karakter")
-    .max(25, "Password terlalu panjang, maksimal 25 karakter"),
+    .min(1, "Konfirmasi password tidak boleh")
 });
 
 const tokenSchema = z.object({

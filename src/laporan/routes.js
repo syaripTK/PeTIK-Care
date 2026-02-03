@@ -16,23 +16,35 @@ const router = express.Router();
 
 router.post(
   "/create",
+<<<<<<< HEAD
   verifyToken("user"),
   validateCreateLaporan,
   cekIptObatId,
 
+=======
+  validateCreateLaporan,
+  cekIptUserId,
+  cekIptObatId,
+  verifyToken(["user"]),
+>>>>>>> main
   createLaporan,
 );
-router.get("/", verifyToken("admin"), getLaporan);
-router.get("/search/:id", verifyToken("admin"), checkIdLaporan, getLaporanById);
+router.get("/", verifyToken(["admin"]), getLaporan);
+router.get(
+  "/search/:id",
+  verifyToken(["admin"]),
+  checkIdLaporan,
+  getLaporanById,
+);
 router.delete(
   "/delete/byUser/:id",
-  verifyToken("user"),
+  verifyToken(["user"]),
   checkIdLaporan,
   deleteLaporan,
 );
 router.delete(
   "/delete/byAdmin/:id",
-  verifyToken("admin"),
+  verifyToken(["admin"]),
   checkIdLaporan,
   deleteLaporan,
 );

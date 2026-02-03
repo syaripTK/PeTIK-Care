@@ -64,8 +64,14 @@ const removeToken = async (token) => {
   });
 };
 
-const editPassword = async (email, body) => {
-  const user = await findByEmail(email);
+const removeTokenByUser = async (userId) => {
+  return await Refresh_tokens.destroy({
+    where: { userId },
+  });
+};
+
+const editPassword = async (id, body) => {
+  const user = await findId(id);
   await user.update(body);
   return user;
 };
@@ -81,5 +87,6 @@ module.exports = {
   findId,
   createRefresh,
   findByToken,
-  removeToken
+  removeToken,
+  removeTokenByUser,
 };

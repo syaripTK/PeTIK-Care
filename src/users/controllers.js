@@ -9,8 +9,8 @@ const {
   editPassword,
   createRefresh,
   findByToken,
-  removeToken,
   findId,
+  removeTokenByUser,
 } = require("./services.js");
 const {
   generateAccessToken,
@@ -56,7 +56,11 @@ const login = async (req, res) => {
 
     const body = { userId: user.id, token: refreshToken };
     await createRefresh(body);
-    return resSukses(res, 200, "Login berhasil", { accessToken, refreshToken });
+    return resSukses(res, 200, "Login berhasil", {
+      username: user.username,
+      accessToken,
+      refreshToken,
+    });
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
@@ -66,6 +70,9 @@ const searchUser = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await findById(id);
+    if (user === null) {
+      return resGagal(res, 404, "User tidak ditemukan");
+    }
     return resSukses(res, 200, "Data user berhasil ditemukan", user);
   } catch (error) {
     return resGagal(res, 500, error.message);
@@ -83,18 +90,22 @@ const getAllUser = async (req, res) => {
 
 const editPasswordForUser = async (req, res) => {
   try {
-    const { email, passwordLama, passwordBaru } = req.body;
-    const account = await findByEmail(email);
-    if (account === null) {
-      return resGagal(res, 404, "User tidak ditemukan");
+    const { oldPassword, newPassword, confirmNewPassword } = req.body;
+    if (confirmNewPassword != newPassword) {
+      return resGagal(
+        res,
+        400,
+        "Password baru dan konfirmasi password tidak sama",
+      );
     }
-    const isMatch = await bcrypt.compare(passwordLama, account.password);
+    const account = await findId(req.user.id);
+    const isMatch = await bcrypt.compare(oldPassword, account.password);
     if (!isMatch) {
       return resGagal(res, 401, "Password salah!");
     }
-    const newPassword = await bcrypt.hash(passwordBaru, 10);
-    const body = { password: newPassword };
-    await editPassword(email, body);
+    const newPass = await bcrypt.hash(newPassword, 10);
+    const body = { password: newPass };
+    await editPassword(req.user.id, body);
     return resSukses(res, 201, "Password berhasil diubah");
   } catch (error) {
     return resGagal(res, 500, error.message);
@@ -109,6 +120,16 @@ const removeUser = async (req, res) => {
       return resSukses(res, 404, "User tidak ditemukan");
     }
     await remove(id);
+    return resSukses(res, 200, "Data berhasil dihapus");
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+const removeMe = async (req, res) => {
+  try {
+    await removeTokenByUser(req.user.id);
+    await remove(req.user.id);
     return resSukses(res, 200, "Data berhasil dihapus");
   } catch (error) {
     return resGagal(res, 500, error.message);
@@ -137,7 +158,7 @@ const refreshToken = async (req, res) => {
         }
         const user = await findId(decoded.id);
         const newAccessToken = generateAccessToken(user);
-        return resSukses(res, 200, "Token berhasil direfresh!", {
+        return resSukses(res, 200, "Token berhasil diperbarui", {
           accessToken: newAccessToken,
         });
       },
@@ -149,8 +170,9 @@ const refreshToken = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
-    await removeToken(refreshToken);
+    
+
+    await removeTokenByUser(req.user.id);
     return resSukses(res, 200, "Logout berhasil");
   } catch (error) {
     return resGagal(res, 500, error.message);
@@ -167,4 +189,5 @@ module.exports = {
   removeUser,
   refreshToken,
   logout,
+  removeMe,
 };
