@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const verifyToken = require("../middlewares/authMiddleware.js");
 const uploadObat = require("../middlewares/uploadMiddleware.js");
+
 const {
   getAllObatAdmin,
   getAllObatUser,
@@ -9,13 +10,15 @@ const {
   getObatById,
   updateObat,
   deleteObat,
+  searchObat,
 } = require("./controllers.js");
 
 const { validateObat } = require("../middlewares/obatMiddleware.js");
 
-router.get("/", verifyToken("admin"), getAllObatAdmin);
-router.get("/", verifyToken("user"), getAllObatUser);
-router.get("/search/:id", verifyToken("admin"), getObatById);
+router.get("/admin", verifyToken("admin"), getAllObatAdmin);
+router.get("/user", verifyToken("user"), getAllObatUser);
+router.get("/cari/:id", verifyToken("admin"), getObatById);
+router.get("/search", verifyToken("admin"), searchObat);
 router.post(
   "/create",
   verifyToken("admin"),
@@ -30,6 +33,6 @@ router.patch(
   validateObat,
   updateObat,
 );
-router.delete("/delete/:id", verifyToken("admin"), deleteObat);
+router.delete("/hapus/:id", verifyToken("admin"), deleteObat);
 
 module.exports = router;

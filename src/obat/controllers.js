@@ -1,10 +1,14 @@
 const {
   tampilObatAdmin,
   tampilObatUser,
+
+  tampilObat,
   tambahObat,
   cariIdObat,
   ubahObat,
   hapusObat,
+
+  cariNamaObat,
 } = require("./services.js");
 const fs = require("fs");
 const path = require("path");
@@ -82,7 +86,7 @@ const updateObat = async (req, res) => {
         }
       }
 
-      foto_barang = path.basename(req.file.path);
+      foto_obat = path.basename(req.file.path);
     }
     const body = {
       nama_obat,
@@ -115,6 +119,16 @@ const deleteObat = async (req, res) => {
   }
 };
 
+const searchObat = async (req, res) => {
+  try {
+    const { nama } = req.query;
+    const data = await cariNamaObat(nama);
+    return resSukses(res, 200, "Hasil pencarian obat", data);
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
 module.exports = {
   getAllObatAdmin,
   getAllObatUser,
@@ -122,4 +136,5 @@ module.exports = {
   getObatById,
   updateObat,
   deleteObat,
+  searchObat,
 };

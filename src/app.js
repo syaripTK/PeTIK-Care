@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", express.static(path.join(__dirname, "uploads")));
-app.use('/api/obat', obatRoutes);
+app.use("/api/obat", obatRoutes);
 app.use("/api/laporan", routerLaporan);
 app.use("/api/tanggapan", routerTanggapan);
 app.use("/api/users", routeUser);

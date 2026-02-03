@@ -14,13 +14,16 @@ const verifyToken = (role) => (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.username != role) {
-      return resGagal(res, 400, "Access denied");
+    req.user = decoded;
+    if (decoded.role != role) {
+      return resGagal(res, 403, "Akses ditolak");
     }
     next();
   } catch (error) {
     return resGagal(res, 401, "Token tidak valid atau expired");
   }
 };
+
+
 
 module.exports = verifyToken;

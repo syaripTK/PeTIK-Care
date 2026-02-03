@@ -22,7 +22,11 @@ module.exports = {
         allowNull: false
       },
       foto_obat: {
+<<<<<<< HEAD
         type: Sequelize.STRING
+=======
+        type: Sequelize.STRING,
+>>>>>>> main
       },
       createdAt: {
         allowNull: false,

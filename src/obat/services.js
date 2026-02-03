@@ -1,4 +1,4 @@
-const { where } = require("sequelize");
+const { Op } = require("sequelize");
 const db = require("../db/models/index.js");
 const { Obat } = db;
 
@@ -11,6 +11,7 @@ const tampilObatUser = async () => {
     attributes: ["nama_obat", "stok"],
   });
 };
+
 const tambahObat = async (body) => {
   return await Obat.create(body);
 };
@@ -20,16 +21,25 @@ const cariIdObat = async (id) => {
 };
 
 const ubahObat = async (id, body) => {
-  return Obat.update(body, {
+  return await Obat.update(body, {
     where: { id },
   });
 };
 
 const hapusObat = async (id) => {
-  const result = await Obat.destroy({
+  return await Obat.destroy({
     where: { id },
   });
-  return result;
+};
+
+const cariNamaObat = async (nama) => {
+  return await Obat.findAll({
+    where: {
+      nama_obat: {
+        [Op.like]: `%${nama}%`,
+      },
+    },
+  });
 };
 
 module.exports = {
@@ -39,4 +49,5 @@ module.exports = {
   cariIdObat,
   ubahObat,
   hapusObat,
+  cariNamaObat,
 };
