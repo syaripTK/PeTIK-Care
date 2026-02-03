@@ -15,6 +15,7 @@ const verifyToken = (role) => (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
+    req.userId = decoded.id;
     if (decoded.role != role) {
       return resGagal(res, 403, "Akses ditolak");
     }
@@ -23,7 +24,5 @@ const verifyToken = (role) => (req, res, next) => {
     return resGagal(res, 401, "Token tidak valid atau expired");
   }
 };
-
-
 
 module.exports = verifyToken;

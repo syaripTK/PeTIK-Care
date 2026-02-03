@@ -9,6 +9,15 @@ const validateCreateLaporan = (req, res, next) => {
     return resGagal(res, 400, "Maaf, Inputan harus di isi");
   }
 
+  const validTanggapan = Laporan.rawAttributes.tanggapan.values;
+  if (!validTanggapan.includes(tanggapan)) {
+    return resGagal(
+      res,
+      400,
+      `Tanggapan harus salah satu dari: ${validTanggapan.join(", ")}`,
+    );
+  }
+
   next();
 };
 
