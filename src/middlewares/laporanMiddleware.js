@@ -1,5 +1,7 @@
 const db = require("../db/models");
+
 const { Laporan, Obat } = db;
+
 const { resGagal } = require("../helpers/payloads");
 
 const validateCreateLaporan = (req, res, next) => {

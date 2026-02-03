@@ -7,10 +7,11 @@ module.exports = {
       "obat",
       [
         {
+          id: 1,
           nama_obat: "Paracetamol",
           stok: 22,
           kategori: "obat-bebas",
-          foto_obat: "foto_obat-1769698569857-132090587.jpeg",
+          foto_obat: "foto_obat-1770089898491-113919026.jpeg",
         },
       ],
       {},
