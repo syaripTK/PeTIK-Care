@@ -16,6 +16,7 @@ const {
 const {
   validateObat,
   checkIdObat,
+  validateUpdateStok,
 } = require("../middlewares/obatMiddleware.js");
 
 router.get("/lookObat/byAdmin", verifyToken("admin"), getAllObatAdmin);
@@ -33,8 +34,7 @@ router.patch(
   "/update/:id",
   checkIdObat,
   verifyToken("admin"),
-  uploadObat.single("foto_obat"),
-  validateObat,
+  validateUpdateStok,
   updateObat,
 );
 router.delete("/delete/:id", checkIdObat, verifyToken("admin"), deleteObat);

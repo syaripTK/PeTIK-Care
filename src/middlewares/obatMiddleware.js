@@ -13,11 +13,32 @@ const checkIdObat = async (req, res, next) => {
   next();
 };
 
-const validateObat = (req, res, next) => {
+const validateUpdateStok = (req, res, next) => {
+  if (!req.body) {
+    return resGagal(res, 400, "Request body tidak boleh kosong");
+  }
+
+  const { stok } = req.body;
+
+  if (stok === undefined) {
+    return resGagal(res, 400, "stok wajib diisi");
+  }
+
+  const stokNumber = Number(stok);
+
+  if (Number.isNaN(stokNumber) || stokNumber < 0) {
+    return resGagal(res, 400, "stok harus berupa angka positif");
+  }
+
+  req.body.stok = stokNumber;
+  next();
+};
+
+const validateObat = async (req, res, next) => {
   try {
     const { nama_obat, stok, kategori } = req.body;
 
-    if (!nama_obat || !stok || !kategori) {
+    if (!nama_obat || stok === undefined || !kategori) {
       return resGagal(res, 400, "nama_obat, stok, dan kategori wajib diisi");
     }
 
@@ -25,9 +46,15 @@ const validateObat = (req, res, next) => {
       return resGagal(res, 400, "nama_obat maksimal 50 karakter");
     }
 
+    const obatExist = await Obat.findOne({ where: { nama_obat } });
+
+    if (obatExist) {
+      return resGagal(res, 409, "Nama obat sudah terdaftar");
+    }
+
     const stokNumber = typeof stok === "string" ? parseInt(stok) : stok;
 
-    if (typeof stokNumber !== "number" || stokNumber < 0) {
+    if (Number.isNaN(stokNumber) || stokNumber < 0) {
       return resGagal(res, 400, "stok harus berupa angka positif");
     }
 
@@ -56,4 +83,5 @@ const validateObat = (req, res, next) => {
 module.exports = {
   validateObat,
   checkIdObat,
+  validateUpdateStok,
 };

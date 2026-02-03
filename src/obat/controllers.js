@@ -1,8 +1,6 @@
 const {
   tampilObatAdmin,
   tampilObatUser,
-
-  tampilObat,
   tambahObat,
   cariIdObat,
   ubahObat,
@@ -66,29 +64,20 @@ const getObatById = async (req, res) => {
 const updateObat = async (req, res) => {
   try {
     const id = req.params.id;
+<<<<<<< HEAD
+    await cariIdObat(id);
+    const { stok } = req.body;
+=======
     const obatLama = await cariIdObat(id);
     const { nama_obat, stok, kategori } = req.body;
     let foto_obat = obatLama.foto_obat;
+>>>>>>> main
 
-    if (req.file) {
-      if (obatLama.foto_obat) {
-        const pathLama = path.join(__dirname, "../uploads", obatLama.foto_obat);
-
-        if (fs.existsSync(pathLama)) {
-          fs.unlinkSync(pathLama);
-        }
-      }
-
-      foto_obat = path.basename(req.file.path);
-    }
     const body = {
-      nama_obat,
-      kategori,
-      foto_obat,
       stok,
     };
-    const data = await ubahObat(id, body);
-    return resSukses(res, 200, "Data obat berhasil diupdate", data);
+    await ubahObat(id, body);
+    return resSukses(res, 200, "Data obat berhasil diupdate");
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
@@ -105,8 +94,8 @@ const deleteObat = async (req, res) => {
         fs.unlinkSync(filePath);
       }
     }
-    const data = await hapusObat(id);
-    return resSukses(res, 200, "Data berhasil dihapus", data);
+    await hapusObat(id);
+    return resSukses(res, 200, "Data berhasil dihapus");
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
