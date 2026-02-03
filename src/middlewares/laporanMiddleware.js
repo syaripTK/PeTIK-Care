@@ -1,12 +1,14 @@
 const db = require("../db/models");
-const { Laporan, User, Obat } = db;
+
+const { Laporan, Obat } = db;
+
 const { resGagal } = require("../helpers/payloads");
 
 const validateCreateLaporan = (req, res, next) => {
-  const { keluhan, userId, obatId } = req.body;
+  const { keluhan, obatId } = req.body;
 
-  if (!keluhan || !userId || !obatId) {
-    return resGagal(res, 400, "keluhan, userId, dan obatId wajib diisi");
+  if (!keluhan || !obatId) {
+    return resGagal(res, 400, "keluhan dan obatId wajib diisi");
   }
 
   next();
@@ -24,15 +26,6 @@ const checkIdLaporan = async (req, res, next) => {
   next();
 };
 
-const cekIptUserId = async (req, res, next) => {
-  const { userId } = req.body;
-  const data = await User.findByPk(userId);
-  if (data === null) {
-    return resGagal(res, 404, "Maaf, userId tidak ditemukan");
-  }
-  next();
-};
-
 const cekIptObatId = async (req, res, next) => {
   const { obatId } = req.body;
   const data = await Obat.findByPk(obatId);
@@ -45,6 +38,5 @@ const cekIptObatId = async (req, res, next) => {
 module.exports = {
   validateCreateLaporan,
   checkIdLaporan,
-  cekIptUserId,
   cekIptObatId,
 };
