@@ -37,10 +37,6 @@ const createObat = async (req, res) => {
     const { nama_obat, stok, kategori } = req.body;
     let foto_obat = null;
     if (req.file) {
-      // console.log(req.file);
-      // path basename digunakan untuk membaca full fatch dari direktori yang dimaksud
-      // ini contohnya src/uploads/foto_alat-1769574062797-385646126.mp4
-      // tapi akan membaca nama file nya aja
       foto_obat = path.basename(req.file.path);
     }
     const body = {
@@ -51,7 +47,7 @@ const createObat = async (req, res) => {
     };
 
     const obat = await tambahObat(body);
-    return resSukses(res, 201, "Data Obat", obat);
+    return resSukses(res, 201, "Data obat berhasil ditambahkan", obat);
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
@@ -73,7 +69,6 @@ const updateObat = async (req, res) => {
     const obatLama = await cariIdObat(id);
     const { nama_obat, stok, kategori } = req.body;
     let foto_obat = obatLama.foto_obat;
-    // console.log(foto_barang);
 
     if (req.file) {
       if (obatLama.foto_obat) {

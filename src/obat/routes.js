@@ -18,8 +18,8 @@ const {
   checkIdObat,
 } = require("../middlewares/obatMiddleware.js");
 
-router.get("/admin", verifyToken("admin"), getAllObatAdmin);
-router.get("/user", verifyToken("user"), getAllObatUser);
+router.get("/lookObat/byAdmin", verifyToken("admin"), getAllObatAdmin);
+router.get("/lookObat/byUser", verifyToken("user"), getAllObatUser);
 router.get("/search/:id", checkIdObat, verifyToken("admin"), getObatById);
 router.get("/search", verifyToken("admin"), searchObat);
 router.post(
