@@ -1,18 +1,31 @@
 const {
+  tampilObatAdmin,
+  tampilObatUser,
+
   tampilObat,
   tambahObat,
   cariIdObat,
   ubahObat,
   hapusObat,
+
   cariNamaObat,
 } = require("./services.js");
 const fs = require("fs");
 const path = require("path");
 const { resSukses, resGagal } = require("../helpers/payloads.js");
 
-const getAllObat = async (req, res) => {
+const getAllObatAdmin = async (req, res) => {
   try {
-    const obat = await tampilObat();
+    const obat = await tampilObatAdmin();
+    return resSukses(res, 200, "Data Obat", obat);
+  } catch (error) {
+    return resGagal(res, 500, error.message);
+  }
+};
+
+const getAllObatUser = async (req, res) => {
+  try {
+    const obat = await tampilObatUser();
     return resSukses(res, 200, "Data Obat", obat);
   } catch (error) {
     return resGagal(res, 500, error.message);
@@ -46,11 +59,9 @@ const createObat = async (req, res) => {
 
 const getObatById = async (req, res) => {
   try {
-    const obat = await cariIdObat(req.params.id);
-    if (!obat) {
-      return resGagal(res, 404, "Obat not found");
-    }
-    return resSukses(res, 200, "Data Obat", obat);
+    const id = req.params.id;
+    const obat = await cariIdObat(id);
+    return resSukses(res, 200, "Data Obat By Id", obat);
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
@@ -73,7 +84,7 @@ const updateObat = async (req, res) => {
         }
       }
 
-      foto_barang = path.basename(req.file.path);
+      foto_obat = path.basename(req.file.path);
     }
     const body = {
       nama_obat,
@@ -117,7 +128,8 @@ const searchObat = async (req, res) => {
 };
 
 module.exports = {
-  getAllObat,
+  getAllObatAdmin,
+  getAllObatUser,
   createObat,
   getObatById,
   updateObat,
