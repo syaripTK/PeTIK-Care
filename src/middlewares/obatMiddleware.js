@@ -1,4 +1,17 @@
 const { resGagal } = require("../helpers/payloads.js");
+const db = require("../db/models");
+const { Obat } = db;
+
+const checkIdObat = async (req, res, next) => {
+  const id = req.params.id;
+  const obat = await Obat.findByPk(id);
+
+  if (!obat) {
+    return resGagal(res, 404, "Data obat tidak ditemukan");
+  }
+
+  next();
+};
 
 const validateObat = (req, res, next) => {
   try {
@@ -42,4 +55,5 @@ const validateObat = (req, res, next) => {
 
 module.exports = {
   validateObat,
+  checkIdObat,
 };

@@ -13,11 +13,14 @@ const {
   searchObat,
 } = require("./controllers.js");
 
-const { validateObat } = require("../middlewares/obatMiddleware.js");
+const {
+  validateObat,
+  checkIdObat,
+} = require("../middlewares/obatMiddleware.js");
 
 router.get("/admin", verifyToken("admin"), getAllObatAdmin);
 router.get("/user", verifyToken("user"), getAllObatUser);
-router.get("/cari/:id", verifyToken("admin"), getObatById);
+router.get("/search/:id", checkIdObat, verifyToken("admin"), getObatById);
 router.get("/search", verifyToken("admin"), searchObat);
 router.post(
   "/create",
@@ -28,11 +31,12 @@ router.post(
 );
 router.patch(
   "/update/:id",
+  checkIdObat,
   verifyToken("admin"),
   uploadObat.single("foto_obat"),
   validateObat,
   updateObat,
 );
-router.delete("/hapus/:id", verifyToken("admin"), deleteObat);
+router.delete("/delete/:id", checkIdObat, verifyToken("admin"), deleteObat);
 
 module.exports = router;

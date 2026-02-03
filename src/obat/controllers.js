@@ -59,11 +59,9 @@ const createObat = async (req, res) => {
 
 const getObatById = async (req, res) => {
   try {
-    const obat = await cariIdObat(req.params.id);
-    if (!obat) {
-      return resGagal(res, 404, "Obat not found");
-    }
-    return resSukses(res, 200, "Data Obat", obat);
+    const id = req.params.id;
+    const obat = await cariIdObat(id);
+    return resSukses(res, 200, "Data Obat By Id", obat);
   } catch (error) {
     return resGagal(res, 500, error.message);
   }
