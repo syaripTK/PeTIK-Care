@@ -17,7 +17,6 @@ const router = express.Router();
 router.post(
   "/create",
   validateCreateLaporan,
-  cekIptUserId,
   cekIptObatId,
   verifyToken(["user"]),
   createLaporan,
@@ -30,14 +29,8 @@ router.get(
   getLaporanById,
 );
 router.delete(
-  "/delete/byUser/:id",
-  verifyToken(["user"]),
-  checkIdLaporan,
-  deleteLaporan,
-);
-router.delete(
-  "/delete/byAdmin/:id",
-  verifyToken(["admin"]),
+  "/delete/:id",
+  verifyToken(["user", "admin"]),
   checkIdLaporan,
   deleteLaporan,
 );
