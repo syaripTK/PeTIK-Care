@@ -10,7 +10,7 @@ const { resSukses, resGagal } = require("../helpers/payloads.js");
 const createLaporan = async (req, res) => {
   try {
     const { keluhan, obatId } = req.body;
-    const userId = req.userId;
+    const userId = req.user.id;
     const tanggal = new Date();
     const body = { tanggal, keluhan, userId, obatId };
     const data = await tambahLaporan(body);
