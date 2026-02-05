@@ -2,7 +2,7 @@ const { z } = require("zod");
 
 const loginSchema = z.object({
   email: z
-    .string()
+    .string("Email harus berupa string!")
     .refine((val) => val.length > 0, {
       message: "Email tidak boleh kosong. ",
     })
@@ -14,14 +14,14 @@ const loginSchema = z.object({
     ),
   password: z
     .string()
-    .min(6, "Password minimal berisi 6 karakter")
+    .min(1, "Password tidak boleh kosong")
     .max(25, "Password terlalu panjang, maksimal 25 karakter"),
 });
 
 const registerSchema = z.object({
   username: z
     .string()
-    .min(5, "Username minimal 5 karakter")
+    .min(1, "Username tidak boleh kosong")
     .max(25, "Username terlalu panjang, maksimal 25 karakter"),
   email: z
     .string()
@@ -34,7 +34,7 @@ const registerSchema = z.object({
         message: "Email tidak valid",
       },
     ),
-  password: z.string().min(6, "Password minimal 6 karakter"),
+  password: z.string().nonempty("Password tidak boleh kosong"),
 });
 
 module.exports = {

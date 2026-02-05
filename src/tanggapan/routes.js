@@ -5,14 +5,16 @@ const {
   validateCreateLaporan,
   checkIdLaporan,
 } = require("../middlewares/tanggapanMiddleware.js");
-
+const { updateLaporanSchema } = require("../schemas/laporanSchema.js");
+const { validate, validateParams } = require("../middlewares/validate.js");
+const params = require("../schemas/paramsSchema.js");
 const router = express.Router();
 
 router.patch(
   "/update/:id",
-  checkIdLaporan,
-  validateCreateLaporan,
   verifyToken(["admin"]),
+  validate(updateLaporanSchema),
+  validateParams(params),
   updateLaporan,
 );
 

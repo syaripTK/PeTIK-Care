@@ -5,7 +5,7 @@ const changeSchema = z.object({
   newPassword: z.string().min(1, "New password tidak boleh kosong"),
   confirmNewPassword: z
     .string()
-    .min(1, "Konfirmasi password tidak boleh")
+    .min(1, "Konfirmasi password tidak boleh kosong"),
 });
 
 const tokenSchema = z.object({

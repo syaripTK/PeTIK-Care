@@ -7,4 +7,8 @@ const ubahLaporan = async (id, body) => {
   return data;
 };
 
-module.exports = { ubahLaporan };
+const tampilId = async (id) => {
+  return await Laporan.findByPk(id);
+};
+
+module.exports = { ubahLaporan, tampilId };

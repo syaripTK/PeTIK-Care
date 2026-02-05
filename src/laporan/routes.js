@@ -11,13 +11,14 @@ const {
   validateCreateLaporan,
   cekIptObatId,
 } = require("../middlewares/laporanMiddleware.js");
-
+const { laporanSchema } = require("../schemas/laporanSchema.js");
+const params = require("../schemas/paramsSchema.js");
+const { validate, validateParams } = require("../middlewares/validate.js");
 const router = express.Router();
 
 router.post(
   "/create",
-  validateCreateLaporan,
-  cekIptObatId,
+  validate(laporanSchema),
   verifyToken(["user"]),
   createLaporan,
 );
@@ -25,13 +26,13 @@ router.get("/", verifyToken(["admin"]), getLaporan);
 router.get(
   "/search/:id",
   verifyToken(["admin"]),
-  checkIdLaporan,
+  validateParams(params),
   getLaporanById,
 );
 router.delete(
   "/delete/:id",
   verifyToken(["user", "admin"]),
-  checkIdLaporan,
+  validateParams(params),
   deleteLaporan,
 );
 

@@ -10,6 +10,10 @@ const { resSukses, resGagal } = require("../helpers/payloads.js");
 const createLaporan = async (req, res) => {
   try {
     const { keluhan, obatId } = req.body;
+    const laporan = await tampilLaporanId(obatId);
+    if (laporan === null) {
+      return resGagal(res, 404, "obatId tidak ditemukan");
+    }
     const userId = req.user.id;
     const tanggal = new Date();
     const body = { tanggal, keluhan, userId, obatId };
@@ -32,6 +36,10 @@ const getLaporan = async (req, res) => {
 const getLaporanById = async (req, res) => {
   try {
     const id = req.params.id;
+    const laporan = await tampilLaporanId(id);
+    if (laporan === null) {
+      return resGagal(res, 404, "Data laporan tidak ditemukan");
+    }
     const data = await tampilLaporanId(id);
     return resSukses(res, 200, "Data Laporan By Id", data);
   } catch (error) {
@@ -42,6 +50,10 @@ const getLaporanById = async (req, res) => {
 const deleteLaporan = async (req, res) => {
   try {
     const id = req.params.id;
+    const laporan = await tampilLaporanId(id);
+    if (laporan === null) {
+      return resGagal(res, 404, "Data laporan tidak ditemukan");
+    }
     const data = await hapusLaporan(id);
     return resSukses(res, 200, "Data laporan berhasil di hapus", data);
   } catch (error) {
