@@ -49,7 +49,6 @@ const login = async (req, res) => {
     if (!isMatch) {
       return resGagal(res, 401, "Password salah!");
     }
-
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
     const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
