@@ -64,6 +64,10 @@ router.patch(
 );
 router.post("/auth/refresh", validate(tokenSchema), refreshToken);
 
-router.post("/auth/logout", verifyToken(["user" , "admin"]), validate(tokenSchema), logout);
+router.post(
+  "/auth/logout",
+  verifyToken(["user", "admin"]),
+  logout,
+);
 
 module.exports = router;

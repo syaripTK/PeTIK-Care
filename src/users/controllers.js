@@ -41,7 +41,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(password);
     const user = await findByEmail(email);
     if (user === null) {
       return resGagal(res, 404, "User tidak ditemukan");
@@ -53,13 +52,19 @@ const login = async (req, res) => {
 
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
-
+    const decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
     const body = { userId: user.id, token: refreshToken };
     await createRefresh(body);
     return resSukses(res, 200, "Login berhasil", {
-      username: user.username,
-      accessToken,
-      refreshToken,
+      tokens: {
+        accessToken,
+        refreshToken,
+      },
+      user: {
+        id: decoded.id,
+        username: decoded.username,
+        role: decoded.role,
+      },
     });
   } catch (error) {
     return resGagal(res, 500, error.message);
@@ -170,8 +175,6 @@ const refreshToken = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    
-
     await removeTokenByUser(req.user.id);
     return resSukses(res, 200, "Logout berhasil");
   } catch (error) {

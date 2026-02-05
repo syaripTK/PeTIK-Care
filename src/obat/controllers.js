@@ -5,7 +5,7 @@ const {
   cariIdObat,
   ubahObat,
   hapusObat,
-
+  tampilObatNama,
   cariNamaObat,
 } = require("./services.js");
 const fs = require("fs");
@@ -33,6 +33,14 @@ const getAllObatUser = async (req, res) => {
 const createObat = async (req, res) => {
   try {
     const { nama_obat, stok, kategori } = req.body;
+    const duplicate = await tampilObatNama(nama_obat);
+    if (duplicate != null) {
+      return resGagal(
+        res,
+        409,
+        "Nama obat sudah ada, silahkan gunakan nama yang lain",
+      );
+    }
     let foto_obat = null;
     if (req.file) {
       foto_obat = path.basename(req.file.path);

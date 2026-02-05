@@ -1,7 +1,17 @@
 const { z } = require("zod");
 
 const loginSchema = z.object({
-  email: z.string().email("Email tidak valid"),
+  email: z
+    .string()
+    .refine((val) => val.length > 0, {
+      message: "Email tidak boleh kosong. ",
+    })
+    .refine(
+      (val) => val.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+      {
+        message: "Email tidak valid",
+      },
+    ),
   password: z
     .string()
     .min(6, "Password minimal berisi 6 karakter")
@@ -13,7 +23,17 @@ const registerSchema = z.object({
     .string()
     .min(5, "Username minimal 5 karakter")
     .max(25, "Username terlalu panjang, maksimal 25 karakter"),
-  email: z.string().email("Email tidak valid"),
+  email: z
+    .string()
+    .refine((val) => val.length > 0, {
+      message: "Email tidak boleh kosong. ",
+    })
+    .refine(
+      (val) => val.length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),
+      {
+        message: "Email tidak valid",
+      },
+    ),
   password: z.string().min(6, "Password minimal 6 karakter"),
 });
 

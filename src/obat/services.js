@@ -8,7 +8,13 @@ const tampilObatAdmin = async () => {
 
 const tampilObatUser = async () => {
   return await Obat.findAll({
-    attributes: ["nama_obat", "stok"],
+    attributes: ["id", "nama_obat", "stok"],
+  });
+};
+
+const tampilObatNama = async (nama_obat) => {
+  return await Obat.findOne({
+    where: { nama_obat },
   });
 };
 
@@ -50,4 +56,5 @@ module.exports = {
   ubahObat,
   hapusObat,
   cariNamaObat,
+  tampilObatNama,
 };

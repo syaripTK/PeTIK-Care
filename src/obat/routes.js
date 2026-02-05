@@ -12,31 +12,41 @@ const {
   deleteObat,
   searchObat,
 } = require("./controllers.js");
-
+const params = require("../schemas/paramsSchema.js");
 const {
-  validateObat,
-  checkIdObat,
-  validateUpdateStok,
-} = require("../middlewares/obatMiddleware.js");
+  createObatSchema,
+  updateObatSchema,
+} = require("../schemas/obatSchemas.js");
+const { validate, validateParams } = require("../middlewares/validate.js");
 
 router.get("/lookObat/byAdmin", verifyToken(["admin"]), getAllObatAdmin);
 router.get("/lookObat/byUser", verifyToken(["user"]), getAllObatUser);
-router.get("/search/:id", checkIdObat, verifyToken(["admin"]), getObatById);
+router.get(
+  "/search/:id",
+  verifyToken(["admin"]),
+  validateParams(params),
+  getObatById,
+);
 router.get("/search", verifyToken(["admin"]), searchObat);
 router.post(
   "/create",
   verifyToken(["admin"]),
   uploadObat.single("foto_obat"),
-  validateObat,
+  validate(createObatSchema),
   createObat,
 );
 router.patch(
   "/update/:id",
-  checkIdObat,
+  validateParams(params),
   verifyToken(["admin"]),
-  validateUpdateStok,
+  validate(updateObatSchema),
   updateObat,
 );
-router.delete("/delete/:id", checkIdObat, verifyToken(["admin"]), deleteObat);
+router.delete(
+  "/delete/:id",
+  validateParams(params),
+  verifyToken(["admin"]),
+  deleteObat,
+);
 
 module.exports = router;
